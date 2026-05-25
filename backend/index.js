@@ -25,7 +25,6 @@ const initializeDBAndServer = async () => {
       console.log('Server Running at http://localhost:3000/')
     })
     
-    
   } catch (e) {
     console.log(`DB Error: ${e.message}`)
     process.exit(1)
@@ -34,7 +33,7 @@ const initializeDBAndServer = async () => {
 
 initializeDBAndServer()
 
-// Login api
+
 app.post('/login', async (request, response) => {
   const {email, password} = request.body
   const getQuery = `select * from users where email = '${email}'`
@@ -161,10 +160,9 @@ app.get('/api/staff/:userId', async (request, response) => {
   response.send(staff)
 })
 
+
 app.get('/api/delivery-staff/:id/shipments', async (request, response) => {
-
   const {id} = request.params
-
   const query = `
     SELECT
       s.shipment_id,
