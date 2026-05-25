@@ -86,7 +86,7 @@ app.post('/register', async (request, response) => {
 
 app.get('/users', async (req,res)=>{
   const users = await db.all(`
-    SELECT * FROM parcels;
+    SELECT * FROM users;
   `)
   res.send(users)
 })
@@ -100,7 +100,7 @@ app.get('/delivery', async (req,res)=>{
 
 app.get('/locations', async (req,res)=>{
   const users = await db.all(`
-    SELECT * FROM locations;
+    SELECT * FROM parcels;
   `)
   res.send(users)
 })
@@ -126,7 +126,6 @@ app.put('/api/shipments/:id/status', async (request, response) => {
 })
 
 app.get('/api/track/:trackingId', async (request, response) => {
-  const db = getDB()
 
   const {trackingId} = request.params
 
@@ -147,6 +146,46 @@ app.get('/api/track/:trackingId', async (request, response) => {
   const trackingDetails = await db.all(trackQuery, [trackingId])
 
   response.send(trackingDetails)
+})
+
+app.get('/api/staff/:userId', async (request, response) => {
+  const {userId} = request.params
+
+  const query = `
+    SELECT
+      staff_id,
+      user_id
+    FROM delivery_staff
+    WHERE user_id = ?;`
+  const staff = await db.get(query, [userId])
+
+  response.send(staff)
+})
+
+app.get('/api/delivery-staff/:id/shipments', async (request, response) => {
+
+  const {id} = request.params
+
+  const query = `
+    SELECT
+      s.shipment_id,
+      s.tracking_number,
+      s.shipment_status,
+      s.estimated_delivery_date,
+
+      p.receiver_name,
+      p.receiver_phone,
+      p.parcel_type
+
+    FROM shipments s
+
+    JOIN parcels p
+    ON s.parcel_id = p.parcel_id
+
+    WHERE s.assigned_staff_id = ?;`
+  const shipments = await db.all(query, [id])
+
+  response.send(shipments)
 })
 
 app.post('/api/delivery-proof', async (request, response) => {
