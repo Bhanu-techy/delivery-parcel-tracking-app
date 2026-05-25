@@ -6,10 +6,10 @@ const sqlite3 = require('sqlite3')
 const cors = require('cors')
 const app = express()
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+
 app.use(cors());
 app.use(express.json())
-
-const bcrypt = require('bcrypt')
 
 const dbPath = path.join(__dirname, 'database.db')
 
@@ -21,6 +21,18 @@ const initializeDBAndServer = async () => {
       filename: dbPath,
       driver: sqlite3.Database,
     })
+    db.run(` 
+       CREATE TABLE IF NOT EXISTS users (
+      user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      full_name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      phone TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      role TEXT CHECK(role IN ('Customer', 'Delivery Staff', 'Admin')) NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+      `)
+      
     app.listen(5000, () => {
       console.log('Server Running at http://localhost:3000/')
     })
@@ -67,6 +79,8 @@ app.post('/register', async (request, response) => {
 
   const existingUser = await db.get(checkUserQuery, [email])
 
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   if (existingUser !== undefined) {
     response.status(400)
     response.send({
@@ -75,7 +89,7 @@ app.post('/register', async (request, response) => {
   } else {
     const insertUserQuery = `INSERT INTO users (full_name, email, phone, password, role)
       VALUES (?, ?, ?, ?, ?);`
-    await db.run(insertUserQuery, [full_name, email, phone, password, role,])
+    await db.run(insertUserQuery, [full_name, email, phone, hashedPassword, role,])
 
     response.send({
       message: 'User Registered Successfully',
