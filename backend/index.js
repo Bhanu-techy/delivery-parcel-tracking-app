@@ -32,7 +32,7 @@ const initializeDBAndServer = async () => {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
       `)
-      
+
     app.listen(5000, () => {
       console.log('Server Running at http://localhost:3000/')
     })
@@ -58,10 +58,12 @@ app.post('/login', async (request, response) => {
     const isPasswordMatched = await bcrypt.compare(password, dbUser.password)
 
     if (isPasswordMatched === true) {
-      const payload = {id: dbUser.id, email: dbUser.email}
+      const payload = {id: dbUser.user_id, email: dbUser.email}
       const jwtToken = jwt.sign(payload, 'MY_SECRET_TOKEN')
+
       response.status(200)
-      response.send({jwt_token: jwtToken})
+      response.send({jwt_token: jwtToken, id : dbUser.user_id})
+
     } else {
       response.status(400)
       response.send({error_msg: 'Invalid Password'})
