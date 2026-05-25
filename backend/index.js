@@ -150,7 +150,6 @@ app.get('/api/track/:trackingId', async (request, response) => {
 
 app.get('/api/staff/:userId', async (request, response) => {
   const {userId} = request.params
-
   const query = `
     SELECT
       staff_id,
@@ -189,7 +188,6 @@ app.get('/api/delivery-staff/:id/shipments', async (request, response) => {
 })
 
 app.post('/api/delivery-proof', async (request, response) => {
-
   const {
     shipment_id,
     delivered_to,
@@ -200,8 +198,7 @@ app.post('/api/delivery-proof', async (request, response) => {
       shipment_id,
       delivered_to
     )
-    VALUES (?, ?);
-  `
+    VALUES (?, ?);`
 
   await db.run(insertQuery, [
     shipment_id,
