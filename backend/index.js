@@ -21,17 +21,6 @@ const initializeDBAndServer = async () => {
       filename: dbPath,
       driver: sqlite3.Database,
     })
-    db.run(` 
-       CREATE TABLE IF NOT EXISTS users (
-      user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      full_name TEXT NOT NULL,
-      email TEXT UNIQUE NOT NULL,
-      phone TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL,
-      role TEXT CHECK(role IN ('Customer', 'Delivery Staff', 'Admin')) NOT NULL,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
-      `)
 
     app.listen(5000, () => {
       console.log('Server Running at http://localhost:3000/')
@@ -47,7 +36,7 @@ initializeDBAndServer()
 
 
 app.post('/login', async (request, response) => {
-  const {email, password} = request.body
+  const {email, password, role} = request.body
   const getQuery = `select * from users where email = '${email}'`
   const dbUser = await db.get(getQuery)
 
@@ -61,8 +50,13 @@ app.post('/login', async (request, response) => {
       const payload = {id: dbUser.user_id, email: dbUser.email}
       const jwtToken = jwt.sign(payload, 'MY_SECRET_TOKEN')
 
-      response.status(200)
-      response.send({jwt_token: jwtToken, id : dbUser.user_id})
+      if (dbUser.role === role){
+        response.status(200)
+         response.send({jwt_token: jwtToken, id : dbUser.user_id})
+      }else{
+         response.status(400)
+      response.send({error_msg: 'Invalid Role selection'})
+      }
 
     } else {
       response.status(400)
@@ -205,21 +199,21 @@ app.post('/api/delivery-proof', async (request, response) => {
   const {
     shipment_id,
     delivered_to,
+    proof_image
   } = request.body
 
   const insertQuery = `
     INSERT INTO delivery_proofs (
       shipment_id,
-      delivered_to
+      delivered_to,
+      proof_image
     )
-    VALUES (?, ?);`
+    VALUES (?, ?, ?);`
 
   await db.run(insertQuery, [
     shipment_id,
-    proof_image,
-    receiver_signature,
     delivered_to,
-    delivery_notes,
+    proof_image,
   ])
 
   response.send({
@@ -227,7 +221,8 @@ app.post('/api/delivery-proof', async (request, response) => {
   })
 })
 
-app.get('/api/shipments', async (request, response) => {
+app.get('/api/shipment/:id', async (request, response) => {
+  const {id}=request.params
   const getShipmentsQuery = `
     SELECT
       s.shipment_id,
@@ -238,7 +233,9 @@ app.get('/api/shipments', async (request, response) => {
       p.receiver_phone
     FROM shipments s
     JOIN parcels p
-    ON s.parcel_id = p.parcel_id;
+    ON s.parcel_id = p.parcel_id
+    where shipment_id = ${id}
+    ;
   `
   const shipments = await db.all(getShipmentsQuery)
 

@@ -3,20 +3,23 @@ import { useState } from 'react'
 import { replace, useNavigate } from 'react-router-dom'
 
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState("bhanu@gmail.com")
+  const [email, setEmail] = useState("sai@gmail.com")
   const [role, setRole] = useState("")
-  const [password, setPassword] = useState("bhanu@1234")
+  const [password, setPassword] = useState("sai@1234")
+  const [showErr, setShowErr] = useState(false)
+  const [error, seterror] = useState("")
 
   const navigate = useNavigate();
 
   const onClickLogin = async (e) => {
     e.preventDefault()
     const url = 'https://delivery-parcel-tracking-app.onrender.com/login'
-    const userDetails = {email, password}
-    console.log(role)
+    const userDetails = {email, password, role}
+    
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -34,12 +37,20 @@ const Login = () => {
         case "Customer":
           navigate("/home")
           break;
+        case "Delivery-staff":
+          navigate("/shipments")
+          break
         default:
           break;
       }
+      Cookies.set('userId', data.id)
+      Cookies.set('jwt_token', data.jwt_token)
+
 
     }else{
       console.log(data)
+      setShowErr(true)
+      seterror(data.error_msg)
     }
 
   }
@@ -117,12 +128,13 @@ const Login = () => {
 
           <div className='border w-[385px] h-[45px] rounded-lg'>
           <select className='w-[100%] h-[100%]' onChange={(e)=>setRole(e.target.value)}>
+            <option value="">Select role</option>
             <option value="Admin">Admin</option>
             <option value="Delivery-staff">Delivery-staff</option>
             <option value="Customer">Customer</option>
           </select>
           </div>
-
+          {showErr ? <p className='text-red-600 w-[400px] text-center'>{error}</p>:<p></p>}
           <button
             type="button" onClick={onClickLogin}
             className="w-full bg-blue-600 hover:bg-blue-700 transition-all text-white py-3 rounded-xl font-semibold"
