@@ -21,7 +21,6 @@ const initializeDBAndServer = async () => {
       filename: dbPath,
       driver: sqlite3.Database,
     })
-    db.run('delete from users where user_id =1')
 
     app.listen(5000, () => {
       console.log('Server Running at http://localhost:3000/')
