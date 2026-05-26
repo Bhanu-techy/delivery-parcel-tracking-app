@@ -100,6 +100,9 @@ Admin
 ## API Endpoints
 Parcel APIs
 Method	Endpoint	Description
+
+```
+
 POST	/api/parcels	Create parcel booking
 GET	/api/shipments	Get all shipments
 GET	/api/track/:trackingId	Track shipment
@@ -112,6 +115,8 @@ POST	/api/delivery-proof	Upload delivery proof
 Admin APIs
 Method	Endpoint	Description
 GET	/api/dashboard/admin	Get logistics analytics
+
+```
 
 ## Frontend Screens
 Parcel Booking Page
@@ -157,21 +162,23 @@ SMS delivery alerts
 Barcode scanning support
 ⚙ Installation & Setup
 
+# User Crediential
 
-2️⃣ Backend Setup
-cd backend
-npm install
-Start Backend Server
-npm start
+```
+email : rahul@gmail.com
+password : "rahul@1234
+role : Admin
 
-Server runs on:
+email : sai@gmail.com
+password : sai@1234
+role : Delivery Staff
 
-http://localhost:5000
-3️⃣ Frontend Setup
-cd frontend
-npm install
-npm run dev
+email : priya@gmail.com
+password : priya@1234
+role : Customer
 
-Frontend runs on:
+email : arjun@gmail.com
+password : arjun@1234
+role : Customer
 
-http://localhost:5173
+```
