@@ -16,19 +16,20 @@ const UpdateShipment = () => {
   const {id} = useParams()
 
   const navigate = useNavigate()
+  console.log(id)
 
   useEffect(() => {
     getShipmentDetails()
-  }, [])
+  }, [id])
 
   const getShipmentDetails = async () => {
     try {
-      const url = `http://localhost:5000/api/shipment/${id}`
+      const url = `https://delivery-parcel-tracking-app.onrender.com/api/shipment/${id}`
       const response = await fetch(url)
       const data = await response.json()
 
       setShipmentDetails(data[0])
-
+      console.log(data)
       setStatus(data[0].shipment_status)
     } catch (error) {
       console.log(error)
@@ -39,7 +40,7 @@ const UpdateShipment = () => {
     event.preventDefault()
 
     try {
-      const url = `http://localhost:5000/api/shipment/${id}`
+      const url = `https://delivery-parcel-tracking-app.onrender.com/api/shipments/${id}/status`
 
       const options = {
         method: 'PUT',
@@ -52,16 +53,17 @@ const UpdateShipment = () => {
       }
 
       const response = await fetch(url, options)
-
+      console.log(response)
       if (response.ok) {
         navigate('/shipments')
+        
       }
     } catch (error) {
       console.log(error)
     }
   }
 
-  if (shipmentDetails === null) {
+  if (shipmentDetails.length === 0) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <p className="text-xl font-semibold">

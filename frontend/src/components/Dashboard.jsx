@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react'
+import Header from './Header';
 import {
   Truck,
   Clock3,
@@ -61,9 +62,9 @@ const Dashboard = () => {
   ];
 
   return (
+    <>
+    <Header/>
     <div className="min-h-screen bg-gray-100 p-6">
-      
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold">
           Shipment Dashboard
@@ -98,9 +99,8 @@ const Dashboard = () => {
           </div>
         ))}
       </div>
-
-     
     </div>
+    </>
   );
 };
 

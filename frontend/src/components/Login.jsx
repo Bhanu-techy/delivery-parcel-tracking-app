@@ -7,9 +7,9 @@ import Cookies from 'js-cookie';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState("sai@gmail.com")
+  const [email, setEmail] = useState("")
   const [role, setRole] = useState("")
-  const [password, setPassword] = useState("sai@1234")
+  const [password, setPassword] = useState("")
   const [showErr, setShowErr] = useState(false)
   const [error, seterror] = useState("")
 
@@ -37,7 +37,7 @@ const Login = () => {
         case "Customer":
           navigate("/home")
           break;
-        case "Delivery-staff":
+        case "Delivery Staff":
           navigate("/shipments")
           break
         default:
@@ -45,12 +45,10 @@ const Login = () => {
       }
       Cookies.set('userId', data.id)
       Cookies.set('jwt_token', data.jwt_token)
-
-
     }else{
-      console.log(data)
       setShowErr(true)
       seterror(data.error_msg)
+      console.log(data)
     }
 
   }
@@ -130,7 +128,7 @@ const Login = () => {
           <select className='w-[100%] h-[100%]' onChange={(e)=>setRole(e.target.value)}>
             <option value="">Select role</option>
             <option value="Admin">Admin</option>
-            <option value="Delivery-staff">Delivery-staff</option>
+            <option value="Delivery Staff">Delivery-staff</option>
             <option value="Customer">Customer</option>
           </select>
           </div>

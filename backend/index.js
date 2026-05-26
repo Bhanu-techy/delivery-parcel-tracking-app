@@ -21,6 +21,7 @@ const initializeDBAndServer = async () => {
       filename: dbPath,
       driver: sqlite3.Database,
     })
+    db.run('delete from users where user_id =1')
 
     app.listen(5000, () => {
       console.log('Server Running at http://localhost:3000/')
@@ -55,7 +56,7 @@ app.post('/login', async (request, response) => {
          response.send({jwt_token: jwtToken, id : dbUser.user_id})
       }else{
          response.status(400)
-      response.send({error_msg: 'Invalid Role selection'})
+         response.send({error_msg: 'Invalid Role selection'})
       }
 
     } else {
@@ -65,33 +66,6 @@ app.post('/login', async (request, response) => {
   }
 })
 
-app.post('/register', async (request, response) => {
-
-  const userDetails = request.body
-
-  const {full_name, email, phone, password, role, } = userDetails
-
-  const checkUserQuery = `SELECT * FROM users WHERE email = ?;`
-
-  const existingUser = await db.get(checkUserQuery, [email])
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  if (existingUser !== undefined) {
-    response.status(400)
-    response.send({
-      error_msg: 'User already exists',
-    })
-  } else {
-    const insertUserQuery = `INSERT INTO users (full_name, email, phone, password, role)
-      VALUES (?, ?, ?, ?, ?);`
-    await db.run(insertUserQuery, [full_name, email, phone, hashedPassword, role,])
-
-    response.send({
-      message: 'User Registered Successfully',
-    })
-  }
-})
 
 app.get('/users', async (req,res)=>{
   const users = await db.all(`
@@ -100,16 +74,9 @@ app.get('/users', async (req,res)=>{
   res.send(users)
 })
 
-app.get('/delivery', async (req,res)=>{
+app.get('/api/shipments', async (req,res)=>{
   const users = await db.all(`
-    SELECT * FROM delivery_staff;
-  `)
-  res.send(users)
-})
-
-app.get('/locations', async (req,res)=>{
-  const users = await db.all(`
-    SELECT * FROM parcels;
+    SELECT * FROM shipments;
   `)
   res.send(users)
 })

@@ -10,7 +10,6 @@ const Shipments = () => {
   const navigate = useNavigate()
 
   const userId = Cookies.get('userId')
-  console.log(staffId)
 
   useEffect(() => {
     getShipments()
@@ -51,7 +50,7 @@ const Shipments = () => {
                   {each.tracking_number}
                 </h2>
 
-                <p className="text-gray-500 text-sm">
+                <p className="text-red-600 text-sm">
                   {each.shipment_status}
                 </p>
               </div>
