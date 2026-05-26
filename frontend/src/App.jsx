@@ -13,7 +13,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/login' element={<Login/>} />
-        <Route path='/home' element={<ProtectedRoute><Home/></ProtectedRoute>} />
+        <Route path='/' element={<ProtectedRoute><Home/></ProtectedRoute>} />
         <Route path='/dashboard' element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
         <Route path="/shipments" element={<ProtectedRoute><Shipments/></ProtectedRoute>} />
         <Route path='/update-shipment/:id' element={<ProtectedRoute><UpdateStatus/></ProtectedRoute>} />

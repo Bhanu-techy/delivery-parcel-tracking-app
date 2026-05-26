@@ -10,11 +10,11 @@ const Shipments = () => {
   const navigate = useNavigate()
 
   const userId = Cookies.get('userId')
-  console.log(shipments)
+  
 
   useEffect(() => {
-    getShipments()
     getStaffId()
+    getShipments()
   }, [staffId, userId])
 
   const getStaffId = async () => {

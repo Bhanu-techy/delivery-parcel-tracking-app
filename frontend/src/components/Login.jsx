@@ -35,7 +35,7 @@ const Login = () => {
           navigate('/dashboard')
           break;
         case "Customer":
-          navigate("/home")
+          navigate("/")
           break;
         case "Delivery Staff":
           navigate("/shipments")

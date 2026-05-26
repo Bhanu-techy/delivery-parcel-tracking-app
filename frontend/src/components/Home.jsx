@@ -15,7 +15,7 @@ function Home() {
       }
     }
     getShipments()
-  })
+  },[])
 
   return (
     <>

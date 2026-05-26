@@ -16,7 +16,6 @@ const UpdateShipment = () => {
   const {id} = useParams()
 
   const navigate = useNavigate()
-  console.log(id)
 
   useEffect(() => {
     getShipmentDetails()
@@ -29,7 +28,6 @@ const UpdateShipment = () => {
       const data = await response.json()
 
       setShipmentDetails(data[0])
-      console.log(data)
       setStatus(data[0].shipment_status)
     } catch (error) {
       console.log(error)
