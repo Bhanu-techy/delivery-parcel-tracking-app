@@ -7,11 +7,9 @@ function Header() {
     const navigate = useNavigate()
 
     const onClickLogout = () => {
-
         Cookies.remove('Id')
         Cookies.remove('jwt_token')
         navigate("/login")
-
     }
 
   return (
