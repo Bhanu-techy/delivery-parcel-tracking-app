@@ -104,14 +104,18 @@ Method	Endpoint	Description
 ```
 
 POST	/api/parcels	Create parcel booking
+
 GET	/api/shipments	Get all shipments
 GET	/api/track/:trackingId	Track shipment
+
 Shipment APIs
 Method	Endpoint	Description
 PUT	/api/shipments/:id/status	Update shipment status
+
 Delivery APIs
 Method	Endpoint	Description
 POST	/api/delivery-proof	Upload delivery proof
+
 Admin APIs
 Method	Endpoint	Description
 GET	/api/dashboard/admin	Get logistics analytics

@@ -32,7 +32,7 @@ const Login = () => {
     if (response.ok) {
       switch (role) {
         case "Admin":
-          navigate('dashboard')
+          navigate('/dashboard')
           break;
         case "Customer":
           navigate("/home")

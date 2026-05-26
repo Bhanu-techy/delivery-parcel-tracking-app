@@ -10,7 +10,7 @@ function Header() {
 
         Cookies.remove('Id')
         Cookies.remove('jwt_token')
-        navigate("/")
+        navigate("/login")
 
     }
 

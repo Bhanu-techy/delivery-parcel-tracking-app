@@ -10,11 +10,12 @@ const Shipments = () => {
   const navigate = useNavigate()
 
   const userId = Cookies.get('userId')
+  console.log(shipments)
 
   useEffect(() => {
     getShipments()
     getStaffId()
-  }, [staffId])
+  }, [staffId, userId])
 
   const getStaffId = async () => {
     const response = await fetch(`https://delivery-parcel-tracking-app.onrender.com/api/staff/${userId}`)
@@ -37,7 +38,6 @@ const Shipments = () => {
       <h1 className="text-3xl font-bold mb-6">
         Shipments List
       </h1>
-
       <div className="grid gap-5">
         {shipments.map(each => (
           <div

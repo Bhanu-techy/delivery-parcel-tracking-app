@@ -73,11 +73,39 @@ app.get('/users', async (req,res)=>{
   res.send(users)
 })
 
-app.get('/api/shipments', async (req,res)=>{
-  const users = await db.all(`
-    SELECT * FROM shipments;
-  `)
-  res.send(users)
+app.get('/api/shipment', async (request, response) => {
+
+  const query = `
+    SELECT
+      *
+    FROM shipments;
+  `
+
+  const shipments = await db.all(query)
+
+  response.send(shipments)
+})
+
+app.get('/api/shipments', async (request, response) => {
+
+  const query = `
+    SELECT
+      s.shipment_id,
+      s.tracking_number,
+      s.estimated_delivery_date,
+      p.parcel_id,
+      p.parcel_type,
+      p.weight
+
+    FROM shipments s
+
+    JOIN parcels p
+    ON s.parcel_id = p.parcel_id;
+  `
+
+  const shipments = await db.all(query)
+
+  response.send(shipments)
 })
 
 app.put('/api/shipments/:id/status', async (request, response) => {

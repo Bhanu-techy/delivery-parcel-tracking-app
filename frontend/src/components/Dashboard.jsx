@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 
 const Dashboard = () => {
-
     
     const [totalShipments, setTotalShipments] = useState(0)
     const [delayedShipments, setDelayedShipments] = useState(0)
