@@ -43,8 +43,8 @@ const Login = () => {
         default:
           break;
       }
-      Cookies.set('userId', data.id)
-      Cookies.set('jwt_token', data.jwt_token)
+      Cookies.set('userId', data.id, {expires: 30})
+      Cookies.set('jwt_token', data.jwt_token, {expires: 30})
     }else{
       setShowErr(true)
       seterror(data.error_msg)
